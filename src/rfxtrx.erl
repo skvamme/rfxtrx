@@ -38,7 +38,7 @@ loop(Socket,Buffer) ->
                                 ok = gen_tcp:send(Socket,?X10BULBON),
                                 timer:sleep(500),
                                 ok = gen_tcp:send(Socket,?BULBON);
-                        _ -> ok = gen_tcp:send(Socket,?X10BULBOFF), % Turn off the lights at midnight
+                        _ -> ok = gen_tcp:send(Socket,?X10BULBOFF), % Turn off the lights at midnight 
                                 timer:sleep(500),
                                 ok = gen_tcp:send(Socket,?BULBOFF)
                         end,
