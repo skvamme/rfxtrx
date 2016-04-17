@@ -22,6 +22,8 @@ Clone rfxtrx.erl on your server
 git clone https://github.com/skvamme/rfxtrx.git
 
 cd rfxtrx
+
+edit rfxtrx.erl. Change line 10 -define(RFXTRX_IP,"192.168.0.20"). to your actual raspberry pi ip address. Save the file.
 make
 rfxtrx:start().
 
