@@ -16,14 +16,15 @@ Configure ser2net, edit /etc/ser2net.conf. Comment out the default examples at t
 Save the file, connect the rfxtrx433(E) and restart the raspi.
 
 
-Clone rfxtrx.erl on your server
+Clone rfxtrx.git on your server
 
 git clone https://github.com/skvamme/rfxtrx.git
 
 cd rfxtrx
 
-edit rfxtrx.erl. Change line 10 -define(RFXTRX_IP,"192.168.0.20"). to your actual raspberry pi ip address. Save the file.
+edit src/rfxtrx.erl. Change line 10 -define(RFXTRX_IP,"192.168.0.20"). to your actual raspberry pi ip address. Save the file.
 make
+erl -pa ebin
 rfxtrx:start().
 
 
