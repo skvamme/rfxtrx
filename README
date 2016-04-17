@@ -3,7 +3,6 @@ Install ser2net on your raspberry pi.
 sudo apt-get install ser2net
 
 Configure ser2net, edit /etc/ser2net.conf. Comment out the default examples at the end of the file and add one line starting with 10001.
-(I'm on a Mac, If you are on another box you might have another device for your /dev/ttyUSB0)
 
 
 #BANNER:banner:\r\nser2net port \p device \d [\s] (Debian GNU/Linux)\r\n\r\n
