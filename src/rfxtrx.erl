@@ -65,7 +65,7 @@ parse_buffer(<<0,Rest/binary>>) -> parse_buffer(Rest);
 % This clause is true for status messages
 parse_buffer(<<13,1,_,_,_,_Connected_device,Firmwareversion,_Decodeflag1,_Decodeflag2,_Decodeflag3,_,_,_,_,Rest/binary>>) -> 
         io:format("Message 1 status, Firmware=~p~n",[Firmwareversion]), Rest;
-% This clause is true for ack messages from frxtrc
+% This clause is true for ack messages from rfxtrx
 parse_buffer(<<4,2,1,_X1,_X2,Rest/binary>>) -> %io:format("Message 2 ack~n",[]),
         Rest;
 % Uncomment this clause if you have lighting1 devices such as X10
@@ -87,7 +87,7 @@ parse_buffer(<<8,32,1,_Seqnr,_Id1,_Id2,_Id3,_Status,_Battery:4,_Rssi:4,Rest/bina
 parse_buffer(<<8,80,Type,Seqnr,Id:16,Temp:16,Battery:4,Rssi:4,Rest/binary>>) -> 
         io:format("Message 80 temperature, Type=~p, Seqnr=~p Id=~p Temp=~p Batteri=~p Rssi=~p~n",
                 [Type,Seqnr,Id,Temp/10,Battery,Rssi]), Rest;
-% Uncomment this clause if you have temperature and humidity devices
+% Uncomment this clause if you have temperature/humidity devices
 %parse_buffer(<<10,82,Type,Seqnr,Id:16,Temp:16,Humid,_,_,Rest/binary>>) -> 
 %        io:format("Message 82 temperatyre&humidity, Type=~p, Seqnr=~p Id=~p Temp=~p Humid=~p~n",
 %                [Type,Seqnr,Id,Temp/10,Humid]), Rest;
@@ -102,9 +102,10 @@ parse_buffer(<<8,80,Type,Seqnr,Id:16,Temp:16,Battery:4,Rssi:4,Rest/binary>>) ->
 % Uncomment this clause if you have energy devices
 %parse_buffer(<<17,90,_,_,_,_,_,_,_,_,_,Rest/binary>>) -> io:format("Message 90 energy~n",[]), Rest;
 
-% This clause is true for all unknown/irrelevant messages. They are discarded.
+% This clause is true for all unknown/irrelevant messages. They are all discarded.
 parse_buffer(<<Size,_U:Size/binary-unit:8,Rest/binary>>) -> 
-        io:format("Message Unknown is ~p and Rest is ~p~n",[<<Size,_U/binary>>,Rest]), Rest;
+        io:format("Message Unknown is ~p and Rest is ~p~n",[<<Size,_U/binary>>,Rest]), 
+        Rest;
 
 % This clause is allways true. If a message is not completely downloaded yet, we just return the current buffer.
 parse_buffer(Buffer) -> %io:format("Buffer is ~p~n",[Buffer]), 
