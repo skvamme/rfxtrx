@@ -16,7 +16,9 @@ Configure ser2net, edit /etc/ser2net.conf. Comment out the default examples at t
 Save the file, connect the rfxtrx433(E) and restart the raspi.
 
 
-Clone rfxtrx.git on your server
+Clone rfxtrx.git on your LINUX server, or if you are on your Raspberry Pi, then you can use localhost for RFXTRX_IP in rfxtrx.erl.
+
+sudo apt-get install git
 
 git clone https://github.com/skvamme/rfxtrx.git
 
