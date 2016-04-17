@@ -59,6 +59,10 @@ loop(Socket,Buffer) ->
         end.
 %************************************************************************************************************
 % parse_buffer(Buffer)
+% First byte in a message is size excluding the first size byte.
+% Byte 2 is Type
+% Byte 3 is Subtype
+% Byte 4 is Sequence number, starts at zero and up to 255 and then 0 again
 %************************************************************************************************************
 % This clause discards 0-length messages
 parse_buffer(<<0,Rest/binary>>) -> parse_buffer(Rest); 

@@ -1,3 +1,6 @@
+RFXtrx is a handy 433.92 MHz transmitter and reciever. Use it to control and sense in a smart home, smart car, smart farm you name it.
+http://www.rfxcom.com/ It connects to a USB port of your Raspberry Pi.
+
 Install ser2net on your raspberry pi.
 
 sudo apt-get install ser2net
