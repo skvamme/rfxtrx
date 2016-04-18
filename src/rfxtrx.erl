@@ -3,14 +3,20 @@
 -export([start/0,init/0,loop/2]).
 -define(RESET,<<13,0,0,0,0,0,0,0,0,0,0,0,0,0>>).
 -define(STATUS,<<13,0,0,1,2,0,0,0,0,0,0,0,0,0>>).
--define(BULBON,<<11,17,0,0,9241614:32,1,1,15,128>>).
--define(BULBOFF,<<11,17,0,0,9241614:32,1,0,0,128>>).
+-define(BULBON,<<11,17,0,0,9241614:32,1,1,0,0>>).
+-define(BULBOFF,<<11,17,0,0,9241614:32,1,0,0,0>>).
 -define(X10BULBON,<<7,16,0,0,65,1,1,0>>).
 -define(X10BULBOFF,<<7,16,0,0,65,1,5,0>>).
+-define(NEXA3ON,<<11,17,0,0,9949898:32,3,1,0,0>>).
+-define(NEXA3OFF,<<11,17,0,0,9949898:32,3,0,0,0>>).
+-define(NEXADIM,<<11,17,0,0,9949898:32,2,2,5,0>>). 
+-define(NEXADIMON,<<11,17,0,0,9949898:32,2,1,0,0>>).
+-define(NEXADIMOFF,<<11,17,0,0,9949898:32,2,0,0,0>>).
 -define(RFXTRX_IP,"192.168.0.20").
 -define(RFXTRX_PORT,10001).
 %-define(BULBOFF,<<11,17,0,0,9949898:32,6,0,0,128>>).
 %-compile(export_all).
+
 
 start() -> Pid = spawn_link(?MODULE,init,[]), {ok,Pid}.
 
@@ -73,10 +79,12 @@ parse_buffer(<<13,1,_,_,_,_Connected_device,Firmwareversion,_Decodeflag1,_Decode
 parse_buffer(<<4,2,1,_X1,_X2,Rest/binary>>) -> %io:format("Message 2 ack~n",[]),
         Rest;
 % Uncomment this clause if you have lighting1 devices such as X10
-parse_buffer(<<7,16,Type,Seqnr,Housecode,Unitcode,Command,0,Rest/binary>>) -> 
-        io:format("Message 16 lighting1 and x10, Type=~p Seqnr=~p House=~p Unit=~p Command=~p~n",
-                [Type,Seqnr,Housecode,Unitcode,Command]), Rest;
+% Commands are 0=off, 1=on, 2=dim, 3=bright, 5=groupoff, 6=groupon, 7=chime, 255=illegal command
+parse_buffer(<<7,16,Type,Seqnr,Housecode,Unitcode,Command,Rssi,Rest/binary>>) -> 
+        io:format("Message 16 lighting1 and x10, Type=~p Seqnr=~p House=~p Unit=~p Command=~p Rssi=~p~n",
+                [Type,Seqnr,Housecode,Unitcode,Command,Rssi]), Rest;
 % Uncomment this clause if you have lighting2 devices
+% Commands are 0=off, 1=on, 2=setlevel, 3=groupoff, 4=groupon, 5=setgrouplevel
 parse_buffer(<<11,17,Type,Seqnr,Housecode:32,Unitcode,Command,Level,Rssi,Rest/binary>>) ->
         io:format("Message 17 lighting2, Type=~p Seqnr=~p House=~p Unit=~p Command=~p Level=~p Rssi=~p~n",
                 [Type,Seqnr,Housecode,Unitcode,Command,Level,Rssi]), Rest;
@@ -112,7 +120,7 @@ parse_buffer(<<Size,_U:Size/binary-unit:8,Rest/binary>>) ->
         Rest;
 
 % This clause is allways true. If a message is not completely downloaded yet, we just return the current buffer.
-parse_buffer(Buffer) -> %io:format("Buffer is ~p~n",[Buffer]), 
+parse_buffer(Buffer) -> io:format("Buffer is ~p~n",[Buffer]), 
         Buffer.
 
 
