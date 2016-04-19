@@ -7,6 +7,8 @@
 -define(BULBOFF,<<11,17,0,0,9241614:32,1,0,0,0>>).
 -define(X10BULBON,<<7,16,0,0,65,1,1,0>>).
 -define(X10BULBOFF,<<7,16,0,0,65,1,5,0>>).
+-define(NEXAX10ON,<<7,16,0,0,66,1,6,0>>).
+-define(NEXAX10OFF,<<7,16,0,0,66,1,5,0>>).
 -define(NEXA3ON,<<11,17,0,0,9949898:32,3,1,0,0>>).
 -define(NEXA3OFF,<<11,17,0,0,9949898:32,3,0,0,0>>).
 -define(NEXADIM,<<11,17,0,0,9949898:32,2,2,5,0>>). 
@@ -79,6 +81,7 @@ parse_buffer(<<13,1,_,_,_,_Connected_device,Firmwareversion,_Decodeflag1,_Decode
 parse_buffer(<<4,2,1,_X1,_X2,Rest/binary>>) -> %io:format("Message 2 ack~n",[]),
         Rest;
 % Uncomment this clause if you have lighting1 devices such as X10
+% Housecode are a=65, b=66 and so on
 % Commands are 0=off, 1=on, 2=dim, 3=bright, 5=groupoff, 6=groupon, 7=chime, 255=illegal command
 parse_buffer(<<7,16,Type,Seqnr,Housecode,Unitcode,Command,Rssi,Rest/binary>>) -> 
         io:format("Message 16 lighting1 and x10, Type=~p Seqnr=~p House=~p Unit=~p Command=~p Rssi=~p~n",
