@@ -9,7 +9,6 @@ Configure ser2net, edit /etc/ser2net.yaml.
 
 Change the first connection group to:
 
-<pre>
 connection: &con0096
  accepter: tcp,10001
  enable: on
@@ -18,7 +17,6 @@ connection: &con0096
  connector: serialdev,
   /dev/ttyUSB0,
   38400n81,local
-</pre>
 
 Save the file, connect the rfxtrx433(E) and restart the raspi.
 
