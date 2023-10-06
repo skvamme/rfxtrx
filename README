@@ -5,16 +5,20 @@ Install ser2net on your raspberry pi.
 
 sudo apt-get install ser2net
 
-Configure ser2net, edit /etc/ser2net.conf. Comment out the default examples at the end of the file and add one line starting with 10001.
+Configure ser2net, edit /etc/ser2net.yaml. 
 
+Change the first connection group to:
 
-#BANNER:banner:\r\nser2net port \p device \d [\s] (Debian GNU/Linux)\r\n\r\n
-
-10001:raw:0:/dev/ttyUSB0:38400 NONE 1STOPBIT 8DATABITS
-#2001:telnet:600:/dev/ttyS1:9600 8DATABITS NONE 1STOPBIT banner
-#3000:telnet:600:/dev/ttyS0:19200 8DATABITS NONE 1STOPBIT banner
-#3001:telnet:600:/dev/ttyS1:19200 8DATABITS NONE 1STOPBIT banner
-
+<pre>
+connection: &con0096
+ accepter: tcp,10001
+ enable: on
+ options:
+  kickolduser: true
+ connector: serialdev,
+  /dev/ttyUSB0,
+  38400n81,local
+</pre>
 
 Save the file, connect the rfxtrx433(E) and restart the raspi.
 
