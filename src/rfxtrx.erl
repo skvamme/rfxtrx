@@ -75,7 +75,7 @@ loop(Socket,Buffer) ->
 % This clause discards 0-length messages
 parse_buffer(<<0,Rest/binary>>) -> parse_buffer(Rest); 
 % This clause is true for status messages
-parse_buffer(<<13,1,_,_,_,_Connected_device,Firmwareversion,_Decodeflag1,_Decodeflag2,_Decodeflag3,_,_,_,_,Rest/binary>>) -> 
+parse_buffer(<<20,1,_,_,_,_Connected_device,Firmwareversion,_Decodeflag1,_Decodeflag2,_Decodeflag3,_,_,_,_,Rest/binary>>) -> 
         io:format("Message 1 status, Firmware=~p~n",[Firmwareversion]), Rest;
 % This clause is true for ack messages from rfxtrx
 parse_buffer(<<4,2,1,_X1,_X2,Rest/binary>>) -> %io:format("Message 2 ack~n",[]),
